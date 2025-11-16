@@ -14,16 +14,16 @@ public class Camion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String dominio; // patente
+    private String dominio;             // patente
     private String nombreTransportista;
     private String telefono;
 
     private Double capacidadPeso;
     private Double capacidadVolumen;
 
-    private Double costoBaseKm;
-    private Double consumoCombustible; // litros por km
+    private Double costoKm; // si usan costo por kilometro
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private EstadoCamion estado;
+    private EstadoCamion estado = EstadoCamion.DISPONIBLE;
 }

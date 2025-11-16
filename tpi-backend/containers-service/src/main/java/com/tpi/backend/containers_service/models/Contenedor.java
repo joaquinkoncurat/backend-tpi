@@ -17,14 +17,11 @@ public class Contenedor {
     private Double peso;
     private Double volumen;
 
-    @Enumerated(EnumType.STRING)
-    private EstadoContenedor estado;
-
-    private Long idCliente; // referencia al cliente
+    private Long idCliente; // referencia externa al microservicio de clientes
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private EstadoContenedor estado = EstadoContenedor.DISPONIBLE;
 
-    private Long solicitudId; // si necesitás trazar asociación
+    private Long solicitudId; // opcional: útil para trazabilidad
 }
