@@ -21,4 +21,10 @@ public class Contenedor {
     private EstadoContenedor estado;
 
     private Long idCliente; // referencia al cliente
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private EstadoContenedor estado = EstadoContenedor.DISPONIBLE;
+
+    private Long solicitudId; // si necesitás trazar asociación
 }
