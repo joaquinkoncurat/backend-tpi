@@ -1,9 +1,9 @@
 package com.tpi.backend.depots_service.services;
 
-import com.tpi.backend.depots.models.Deposito;
-import com.tpi.backend.depots.repositories.DepositoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.tpi.backend.depots_service.models.Deposito;
+import com.tpi.backend.depots_service.repositories.DepositoRepository;
 
 import java.util.List;
 

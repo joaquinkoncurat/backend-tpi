@@ -1,10 +1,9 @@
 package com.tpi.backend.depots_service.controllers;
 
-import com.tpi.backend.depots.models.Deposito;
-import com.tpi.backend.depots.services.DepositoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
+import com.tpi.backend.depots_service.models.Deposito;
+import com.tpi.backend.depots_service.services.DepositoService;
 import java.util.List;
 
 @RestController

@@ -52,8 +52,8 @@
         <module>api-gateway</module>
         <module>requests-service</module>
         <module>routes-service</module>
-        <module>tracking-service</module>
-        <module>billing-service</module>
+        <module>tracking</module>
+        <module>billing</module>
         <module>containers-service</module>
         <module>trucks-service</module>
         <module>depots-service</module>

@@ -1,4 +1,4 @@
-package com.tpi.backend.routes_service.config;
+package com.tpi.backend.requests_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

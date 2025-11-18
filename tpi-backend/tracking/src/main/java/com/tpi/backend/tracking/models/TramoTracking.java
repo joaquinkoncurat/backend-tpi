@@ -10,19 +10,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TramoTracking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long tramoId;         // ID del tramo original del routes-service
-    private Long solicitudId;     // solicitud asociada
+    private Long rutaId;
+    private Long tramoId;
+    private Long solicitudId;
 
     @Enumerated(EnumType.STRING)
     private EstadoTramo estado;
 
     private LocalDateTime inicioReal;
     private LocalDateTime finReal;
-
     private Long camionId;
 }

@@ -13,8 +13,10 @@ public class Tarifa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Double costoPorKmBase;
     private Double costoLitroCombustible;
     private Double costoEstadiaPorDia;
+    private Long rutaId;
+    private Long solicitudId;
+    private Double costoReal;
 }

@@ -1,0 +1,68 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: requests-service
+          uri: http://requests-service:8088
+          predicates:
+            - Path=/api/solicitudes/**
+          filters:
+            - StripPrefix=1
+
+        - id: routes-service
+          uri: http://routes-service:8082
+          predicates:
+            - Path=/api/rutas/**
+          filters:
+            - StripPrefix=1
+
+        - id: billing-service
+          uri: http://billing-service:8086
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - StripPrefix=1
+
+        - id: containers-service
+          uri: http://containers-service:8085
+          predicates:
+            - Path=/api/contenedores/**
+          filters:
+            - StripPrefix=1
+
+        - id: depots-service
+          uri: http://depots-service:8084
+          predicates:
+            - Path=/api/depositos/**
+          filters:
+            - StripPrefix=1
+
+        - id: tracking-service
+          uri: http://tracking-service:8087
+          predicates:
+            - Path=/api/tracking/**
+          filters:
+            - StripPrefix=1
+
+        - id: trucks-service
+          uri: http://trucks-service:8083
+          predicates:
+            - Path=/api/trucks/**
+          filters:
+            - StripPrefix=1
+
+  main:
+    web-application-type: reactive
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/master
+          jwk-set-uri: http://keycloak:8080/realms/master/protocol/openid-connect/certs

@@ -23,8 +23,7 @@ public class TrackingController {
     @PutMapping("/tramos/{id}/finalizar")
     public TramoTracking finalizar(
             @PathVariable Long id,
-            @RequestBody EventoDTO dto
-    ) {
+            @RequestBody EventoDTO dto) {
         return trackingService.finalizarTramo(id, dto.getCostoParcial());
     }
 
@@ -33,4 +32,10 @@ public class TrackingController {
         return trackingService.obtenerTrackingPorSolicitud(solicitudId);
     }
 
+    @PutMapping("/tramos/{tramoId}/asignar-camion")
+    public void asignarCamion(
+            @PathVariable Long tramoId,
+            @RequestParam Long camionId) {
+        trackingService.asignarCamion(tramoId, camionId);
+    }
 }

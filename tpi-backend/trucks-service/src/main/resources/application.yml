@@ -1,0 +1,30 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: trucks_service
+
+  datasource:
+    url: jdbc:postgresql://db_trucks:5432/trucks_db
+    username: user_trucks
+    password: password_trucks
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/master
+          jwk-set-uri: http://keycloak:8080/realms/master/protocol/openid-connect/certs

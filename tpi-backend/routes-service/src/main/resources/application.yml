@@ -1,0 +1,38 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: routes_service
+
+  datasource:
+    url: jdbc:postgresql://db_routes:5432/routes_db
+    username: user_routes
+    password: password_routes
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/master
+          jwk-set-uri: http://keycloak:8080/realms/master/protocol/openid-connect/certs
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+
+googlemaps:
+  api-key: YOUR_GOOGLE_MAPS_API_KEY_HERE

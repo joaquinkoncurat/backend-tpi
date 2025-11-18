@@ -1,8 +1,8 @@
 package com.tpi.backend.routes_service.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
+import jakarta.persistence.*;
 
 @Entity
 @Data
@@ -15,11 +15,12 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long solicitudId; // referencia al microservicio requests
-
+    private Long solicitudId;
     private Integer cantidadTramos;
     private Integer cantidadDepositos;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ruta_id")
     private List<Tramo> tramos;
+
 }

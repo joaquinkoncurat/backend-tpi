@@ -3,9 +3,9 @@ package com.tpi.backend.trucks_service.controllers;
 import com.tpi.backend.trucks_service.models.Camion;
 import com.tpi.backend.trucks_service.models.EstadoCamion;
 import com.tpi.backend.trucks_service.services.CamionService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -26,19 +26,22 @@ public class CamionController {
     }
 
     @GetMapping("/disponibles")
-    public List<Camion> buscarDisponibles(
-            @RequestParam Double peso,
-            @RequestParam Double volumen
-    ) {
+    public List<Camion> buscarDisponibles(@RequestParam Double peso, @RequestParam Double volumen) {
         return camionService.buscarDisponibles(peso, volumen);
     }
 
     @PutMapping("/{id}/estado")
-    public Camion cambiarEstado(
-            @PathVariable Long id,
-            @RequestParam EstadoCamion estado
-    ) {
+    public Camion cambiarEstado(@PathVariable Long id, @RequestParam EstadoCamion estado) {
         return camionService.cambiarEstado(id, estado);
     }
 
+    @PutMapping("/{id}/estado/json")
+    public Camion cambiarEstadoJson(@PathVariable Long id, @RequestBody EstadoRequest req) {
+        return camionService.cambiarEstado(id, req.getEstado());
+    }
+
+    @Data
+    public static class EstadoRequest {
+        private EstadoCamion estado;
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RoutesController {
 
-private final RoutesService routesService;
+    private final RoutesService routesService;
 
     @PostMapping("/estimar")
     public Ruta estimarRuta(@RequestParam Long solicitudId) {
@@ -20,5 +20,10 @@ private final RoutesService routesService;
     @PostMapping("/{id}/asignar-camion")
     public Ruta asignarCamion(@PathVariable Long id, @RequestParam Long camionId) {
         return routesService.asignarCamion(id, camionId);
+    }
+
+    @GetMapping("/{id}")
+    public Ruta obtenerRuta(@PathVariable Long id) {
+        return routesService.obtenerRuta(id);
     }
 }

@@ -32,6 +32,6 @@ public class Tramo {
 
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
-
-    private Long camionId; // referencia al microservicio trucks
+    private Double distanciaKm;
+    private Long camionId;
 }

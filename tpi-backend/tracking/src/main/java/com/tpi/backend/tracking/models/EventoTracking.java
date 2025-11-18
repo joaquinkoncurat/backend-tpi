@@ -5,18 +5,18 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EventoTracking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long solicitudId;
     private Long tramoId;
-
-    private String tipo;              // "INICIO_TRAMO", "FIN_TRAMO"
+    private String tipo;
     private LocalDateTime fechaHora;
-
-    private Double costoParcial;      // para billing-service
+    private Double costoParcial;
 }

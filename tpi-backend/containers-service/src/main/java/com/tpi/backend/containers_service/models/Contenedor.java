@@ -23,5 +23,4 @@ public class Contenedor {
     @Enumerated(EnumType.STRING)
     private EstadoContenedor estado = EstadoContenedor.DISPONIBLE;
 
-    private Long solicitudId; // opcional: útil para trazabilidad
 }

@@ -13,22 +13,33 @@ public class BillingController {
 
     private final BillingService billingService;
 
-    // registrar o modificar tarifa
     @PostMapping("/tarifa")
     public Tarifa guardarTarifa(@RequestBody Tarifa tarifa) {
         return billingService.guardarTarifa(tarifa);
     }
 
-    // obtener tarifa actual
     @GetMapping("/tarifa")
     public Tarifa obtenerTarifa() {
         return billingService.obtenerTarifaActual();
     }
 
-    // evento enviado por tracking-service
     @PostMapping("/evento/tramo-finalizado")
     public void tramoFinalizado(@RequestBody EventoTramoFinalizado evento) {
         billingService.procesarEventoTramoFinalizado(evento);
     }
 
+    @PostMapping("/procesar-evento")
+    public void procesarEvento(@RequestBody EventoTramoFinalizado evento) {
+        billingService.procesarEventoTramoFinalizado(evento);
+    }
+
+    @GetMapping("/estimacion/{rutaId}")
+    public Double estimarCosto(@PathVariable Long rutaId) {
+        return billingService.calcularCostoEstimado(rutaId);
+    }
+
+    @PostMapping("/billing/eventos")
+    public void recibirEvento(@RequestBody EventoTramoFinalizado evento) {
+        billingService.procesarEventoTramoFinalizado(evento);
+    }
 }

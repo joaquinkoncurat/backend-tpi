@@ -1,0 +1,249 @@
+version: "3.8"
+services:
+  db_keycloak:
+    image: postgres:15-alpine
+    container_name: db_keycloak
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak_user
+      POSTGRES_PASSWORD: superstrongpassword
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db_keycloak:5432/keycloak
+      KC_DB_USERNAME: keycloak_user
+      KC_DB_PASSWORD: superstrongpassword
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 8080
+    command: start-dev
+    depends_on:
+      - db_keycloak
+    restart: unless-stopped
+
+  db_requests:
+    image: postgres:15-alpine
+    container_name: db_requests
+    environment:
+      POSTGRES_DB: requests_db
+      POSTGRES_USER: user_requests
+      POSTGRES_PASSWORD: password_requests
+    ports:
+      - "5433:5432"
+    volumes:
+      - requests_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_routes:
+    image: postgres:15-alpine
+    container_name: db_routes
+    environment:
+      POSTGRES_DB: routes_db
+      POSTGRES_USER: user_routes
+      POSTGRES_PASSWORD: password_routes
+    ports:
+      - "5434:5432"
+    volumes:
+      - routes_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_billing:
+    image: postgres:15-alpine
+    container_name: db_billing
+    environment:
+      POSTGRES_DB: billing_db
+      POSTGRES_USER: user_billing
+      POSTGRES_PASSWORD: password_billing
+    ports:
+      - "5435:5432"
+    volumes:
+      - billing_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_tracking:
+    image: postgres:15-alpine
+    container_name: db_tracking
+    environment:
+      POSTGRES_DB: tracking_db
+      POSTGRES_USER: user_tracking
+      POSTGRES_PASSWORD: password_tracking
+    ports:
+      - "5436:5432"
+    volumes:
+      - tracking_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_containers:
+    image: postgres:15-alpine
+    container_name: db_containers
+    environment:
+      POSTGRES_DB: containers_db
+      POSTGRES_USER: user_containers
+      POSTGRES_PASSWORD: password_containers
+    ports:
+      - "5437:5432"
+    volumes:
+      - containers_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_trucks:
+    image: postgres:15-alpine
+    container_name: db_trucks
+    environment:
+      POSTGRES_DB: trucks_db
+      POSTGRES_USER: user_trucks
+      POSTGRES_PASSWORD: password_trucks
+    ports:
+      - "5438:5432"
+    volumes:
+      - trucks_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  db_depots:
+    image: postgres:15-alpine
+    container_name: db_depots
+    environment:
+      POSTGRES_DB: depots_db
+      POSTGRES_USER: user_depots
+      POSTGRES_PASSWORD: password_depots
+    ports:
+      - "5439:5432"
+    volumes:
+      - depots_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8081:8081"
+    depends_on:
+      - keycloak
+      - requests-service
+      - routes-service
+      - billing-service
+      - containers-service
+      - depots-service
+      - tracking-service
+      - trucks-service
+    restart: unless-stopped
+
+  requests-service:
+    build:
+      context: ./requests-service
+      dockerfile: Dockerfile
+    container_name: requests-service
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_requests:5432/requests_db
+    depends_on:
+      - db_requests
+      - keycloak
+    restart: unless-stopped
+
+  routes-service:
+    build:
+      context: ./routes-service
+      dockerfile: Dockerfile
+    container_name: routes-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_routes:5432/routes_db
+      OSRM_BASE_URL: http://osrm:5000
+    depends_on:
+      - db_routes
+      - keycloak
+    restart: unless-stopped
+
+  billing-service:
+    build:
+      context: ./billing
+      dockerfile: Dockerfile
+    container_name: billing-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_billing:5432/billing_db
+    depends_on:
+      - db_billing
+      - keycloak
+    restart: unless-stopped
+
+  containers-service:
+    build:
+      context: ./containers-service
+      dockerfile: Dockerfile
+    container_name: containers-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_containers:5432/containers_db
+    depends_on:
+      - db_containers
+      - keycloak
+    restart: unless-stopped
+
+  depots-service:
+    build:
+      context: ./depots-service
+      dockerfile: Dockerfile
+    container_name: depots-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_depots:5432/depots_db
+    depends_on:
+      - db_depots
+      - keycloak
+    restart: unless-stopped
+
+  tracking-service:
+    build:
+      context: ./tracking
+      dockerfile: Dockerfile
+    container_name: tracking-service
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_tracking:5432/tracking_db
+    depends_on:
+      - db_tracking
+      - keycloak
+    restart: unless-stopped
+
+  trucks-service:
+    build:
+      context: ./trucks-service
+      dockerfile: Dockerfile
+    container_name: trucks-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_trucks:5432/trucks_db
+    depends_on:
+      - db_trucks
+      - keycloak
+    restart: unless-stopped
+
+volumes:
+  keycloak_data:
+  requests_data:
+  routes_data:
+  billing_data:
+  containers_data:
+  depots_data:
+  tracking_data:
+  trucks_data:
